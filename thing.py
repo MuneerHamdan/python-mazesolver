@@ -20,7 +20,7 @@ class Player:
     def __init__(self):
         self.y = 0
         self.x = 0
-        self.active = ""
+        self.moved = 0
 
 
 def printmap():
@@ -30,7 +30,9 @@ def printmap():
     print()
 
 
-p = Player()
+p = []
+player = Player()
+p.append(player)
 def solve():
     
     global solved
@@ -46,33 +48,51 @@ def solve():
 
     # check for exit
 
-    print(f"no E: p.y: {p.y}, p.x: {p.x}")
+    print(f"no E -> traversing now")
 
-    print("traversing")
 
     routes = 0
 
     for dy, dx, direction in moves:
-        if map[p.y + dy][p.x + dx] == ".":
+        if map[p[0].y + dy][p[0].x + dx] == ".":
             print("route", direction)
             routes += 1
-
-    # move through available routes
-    for dy, dx, direction in moves:
-        if map[p.y + dy][p.x + dx] == ".":
-            map[p.y][p.x] = "x"
-            p.y += dy
-            p.x += dx
-            print("moved", direction)
-
     print("routes:", routes)
 
-    map[p.y][p.x] = "O"
+    # if theres 2 or more routes possible, make a new player per route
+    if routes > 1:
+        for i in range(0,routes-1):
+            tmp = Player()
+            p.append(tmp)
+            p[-1].y = p[0].y
+            p[-1].x = p[0].x
+            p[-1].moved = 0
+            print(f"player {i} pos: {p[i].y, p[i].x}, moved = {p[i].moved}")
 
-    return p
+    print(f"size: {len(p)}")
+
+    # move through available routes
+    for i in range(0, len(p)):
+        print(f"player {i} has moved: {p[i].moved}")
+        for dy, dx, direction in moves:
+            if p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == ".":
+                map[p[i].y][p[i].x] = "x"
+                p[i].y += dy
+                p[i].x += dx
+                map[p[i].y][p[i].x] = "O"
+                p[i].moved = 1
+                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
+                printmap()
 
 
-def backtrack(p):
+    for i in range(0, len(p)):
+        p[i].moved = 0
+
+
+    return p[0]
+
+
+def backtrack():
 
     print("backtracking")
 
@@ -84,12 +104,12 @@ def backtrack(p):
     ]
 
     for dy, dx, direction in moves:
-        if map[p.y + dy][p.x + dx] == "x":
-            map[p.y][p.x] = "-"
-            p.y += dy
-            p.x += dx
+        if map[p[0].y + dy][p.x + dx] == "x":
+            map[p[0].y][p.x] = "-"
+            p[0].y += dy
+            p[0].x += dx
             print("moved", direction)
-            map[p.y][p.x] = "O"
+            map[p[0].y][p.x] = "O"
             return
 
 
@@ -99,8 +119,8 @@ printmap()
 for y in range(HEIGHT):
     for x in range(WIDTH):
         if map[y][x] == "S":
-            p.y = y
-            p.x = x
+            p[0].y = y
+            p[0].x = x
             map[y][x] = "O"
 printmap()
 tries = 1
@@ -109,8 +129,11 @@ for i in range(MAXTRIES):
 
     print(f"\n\n----- Attempt {tries} -----\n")
 
-    solve()
     printmap()
+    solve()
+
+    for i in range(0,len(p)):
+        print(p[i].y, p[i].x)
 
     if solved:
         print("solved!!!!!!")
