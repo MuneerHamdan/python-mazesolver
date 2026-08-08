@@ -13,6 +13,16 @@ map = [
     list("#...##.#"),
     list("#.#.##.#"),
     list("#......#"),
+    list("#.#S##.#"),
+    list("#.####.#"),
+    list("#......#"),
+    list("######E#")
+]
+_map = [
+    list("#.#....#"),
+    list("#...##.#"),
+    list("#.#.##.#"),
+    list("#......#"),
     list("#.####.#"),
     list("#.####.#"),
     list("#......#"),
@@ -209,7 +219,6 @@ def main():
 
     if not solved:
         print(f"couldnt solve within {MAXTRIES} attempts")
-
 
 if __name__ == "__main__":
     main()
