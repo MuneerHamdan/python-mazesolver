@@ -1,3 +1,7 @@
+import os
+import time
+
+
 WIDTH = 8
 HEIGHT = 8
 MAXTRIES = 25
@@ -78,7 +82,6 @@ def printmap():
     print()
     for row in map:
         print("".join(row))
-    print()
 
 
 p = []
@@ -89,7 +92,7 @@ def solve():
     
     global solved
 
-    print("solving")
+#    print("solving")
 
     moves = [
         (1, 0, "down"),
@@ -102,7 +105,7 @@ def solve():
         for dy, dx, direction in moves:
             if map[p[i].y + dy][p[i].x + dx] == ".":
                 p[i].routes += 1
-        print(f"{i} has routes:", p[i].routes)
+#        print(f"{i} has routes:", p[i].routes)
 
     # if theres 2 or more routes possible, make a new player per route
     for i in range(0,len(p)):
@@ -113,13 +116,13 @@ def solve():
                 p[-1].y = p[i].y
                 p[-1].x = p[i].x
                 p[-1].moved = 0
-            print(f"player {i} pos: {p[i].y, p[i].x}, moved = {p[i].moved}")
+#            print(f"player {i} pos: {p[i].y, p[i].x}, moved = {p[i].moved}")
 
-    print(f"size: {len(p)}")
+#    print(f"size: {len(p)}")
 
     # move through available routes
     for i in range(0, len(p)):
-        print(f"player {i} has moved: {p[i].moved}")
+#        print(f"player {i} has moved: {p[i].moved}")
         for dy, dx, direction in moves:
             if p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == ".":
 #                map[p[i].y][p[i].x] = f"{i}"
@@ -129,7 +132,7 @@ def solve():
 #                map[p[i].y][p[i].x] = f"{i}"
                 map[p[i].y][p[i].x] = "O"
                 p[i].moved = 1
-                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
+#                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
             elif p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == "E":
 #                map[p[i].y][p[i].x] = f"{i}"
                 map[p[i].y][p[i].x] = "x"
@@ -140,7 +143,6 @@ def solve():
                 p[i].moved = 1
                 solved = 1
                 return
-    printmap()
 
 
     for i in range(0, len(p)):
@@ -151,54 +153,41 @@ def solve():
     return p[0]
 
 
-def backtrack():
-
-    print("backtracking")
-
-    moves = [
-        (1, 0, "down"),
-        (-1, 0, "up"),
-        (0, 1, "right"),
-        (0, -1, "left")
-    ]
-
-    for dy, dx, direction in moves:
-        if map[p[0].y + dy][p.x + dx] == "x":
-            map[p[0].y][p.x] = "-"
-            p[0].y += dy
-            p[0].x += dx
-            print("moved", direction)
-            map[p[0].y][p.x] = "O"
-            return
-
-
 # main
-printmap()
-# find start
-for y in range(HEIGHT):
-    for x in range(WIDTH):
-        if map[y][x] == "S":
-            p[0].y = y
-            p[0].x = x
-            map[y][x] = "O"
-printmap()
-tries = 1
+if __name__ == "__main__":
 
-for i in range(MAXTRIES):
 
-    print(f"\n\n----- Attempt {tries} -----\n")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    printmap()
+    time.sleep(1)
+    # find start
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            if map[y][x] == "S":
+                p[0].y = y
+                p[0].x = x
+                map[y][x] = "O"
+    os.system('cls' if os.name == 'nt' else 'clear')
+    printmap()
+    time.sleep(1)
+    tries = 1
 
-    solve()
+    for i in range(MAXTRIES):
+        time.sleep(1)
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-    for i in range(0,len(p)):
-        print(p[i].y, p[i].x)
+    #    print(f"\n----- Attempt {tries} -----")
 
-    if solved:
-        print("solved!!!!!!")
+        solve()
+
+    #    for i in range(0,len(p)):
+    #        print(p[i].y, p[i].x)
+
         printmap()
-        break
-    tries += 1
+        if solved:
+            print(f"solved in {tries}!")
+            break
+        tries += 1
 
-
-if not solved:
-    print(f"couldnt solve within {MAXTRIES} attempts")
+    if not solved:
+        print(f"couldnt solve within {MAXTRIES} attempts")
