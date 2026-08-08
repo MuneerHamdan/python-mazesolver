@@ -10,6 +10,16 @@ solved = False
 
 map = [
     list("#.#....#"),
+    list("#...##.#"),
+    list("#.#.##.#"),
+    list("#......#"),
+    list("#.####.#"),
+    list("#.####.#"),
+    list("#......#"),
+    list("######E#")
+]
+_map = [
+    list("#.#....#"),
     list("S...##.#"),
     list("#.#.##.#"),
     list("#......#"),
@@ -82,6 +92,7 @@ def printmap():
     print()
     for row in map:
         print("".join(row))
+    print()
 
 
 p = []
@@ -154,20 +165,27 @@ def solve():
 
 
 # main
-if __name__ == "__main__":
-
-
+def main():
     os.system('cls' if os.name == 'nt' else 'clear')
+    print(f"\n----- Attempt 0 -----")
     printmap()
     time.sleep(1)
     # find start
+    solvable = False
     for y in range(HEIGHT):
         for x in range(WIDTH):
             if map[y][x] == "S":
                 p[0].y = y
                 p[0].x = x
                 map[y][x] = "O"
+                solvable = True
+
+    if solvable == False:
+        print("map not solvable")
+        return -1
+
     os.system('cls' if os.name == 'nt' else 'clear')
+    print(f"\n----- Attempt 0 -----")
     printmap()
     time.sleep(1)
     tries = 1
@@ -176,7 +194,7 @@ if __name__ == "__main__":
         time.sleep(1)
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    #    print(f"\n----- Attempt {tries} -----")
+        print(f"\n----- Attempt {tries} -----")
 
         solve()
 
@@ -191,3 +209,7 @@ if __name__ == "__main__":
 
     if not solved:
         print(f"couldnt solve within {MAXTRIES} attempts")
+
+
+if __name__ == "__main__":
+    main()
