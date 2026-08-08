@@ -1,113 +1,13 @@
 import os
 import time
+from defaultmaps import *
 
 
 WIDTH = 8
 HEIGHT = 8
 MAXTRIES = 25
 
-solved = False
-
-map = [
-    list("#.#....#"),
-    list("#...##.#"),
-    list("#.#.##.#"),
-    list("#..S...#"),
-    list("#.#..#.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("######E#")
-]
-_map = [
-    list("#.#....#"),
-    list("#...##.#"),
-    list("#.#.##.#"),
-    list("#..S...#"),
-    list("#.#.##.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("######E#")
-]
-_map = [
-    list("#.#....#"),
-    list("#...##.#"),
-    list("#.#.##.#"),
-    list("#......#"),
-    list("#.#S##.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("######E#")
-]
-_map = [
-    list("#.#....#"),
-    list("#...##.#"),
-    list("#.#.##.#"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("######E#")
-]
-_map = [
-    list("#.#....#"),
-    list("S...##.#"),
-    list("#.#.##.#"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("######E#")
-]
-_map = [
-    list("#.#....#"),
-    list("SE..##.#"),
-    list("###.####"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("########")
-]
-_map = [
-    list("#.#.E..#"),
-    list("S...##.#"),
-    list("###.####"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("########")
-]
-_map = [
-    list("#.#....#"),
-    list("S...##.#"),
-    list("###.####"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("########")
-]
-_map = [
-    list("###....#"),
-    list("S...##.#"),
-    list("###.#E##"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("########")
-]
-_map = [
-    list("###....#"),
-    list("S...##.E"),
-    list("###.####"),
-    list("#......#"),
-    list("#.####.#"),
-    list("#.####.#"),
-    list("#......#"),
-    list("########")
-]
+solved = 0
 
 
 class Player:
@@ -118,9 +18,9 @@ class Player:
         self.routes = 0
 
 
-def printmap():
+def printmap(chosen):
     print()
-    for row in map:
+    for row in maps[chosen]:
         print("".join(row))
     print()
 
@@ -129,7 +29,7 @@ p = []
 player = Player()
 p.append(player)
 
-def solve():
+def solve(chosen):
     
     global solved
 
@@ -144,7 +44,7 @@ def solve():
 
     for i in range(0,len(p)):
         for dy, dx, direction in moves:
-            if map[p[i].y + dy][p[i].x + dx] == ".":
+            if maps[chosen][p[i].y + dy][p[i].x + dx] == ".":
                 p[i].routes += 1
 #        print(f"{i} has routes:", p[i].routes)
 
@@ -165,22 +65,22 @@ def solve():
     for i in range(0, len(p)):
 #        print(f"player {i} has moved: {p[i].moved}")
         for dy, dx, direction in moves:
-            if p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == "E":
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "x"
+            if p[i].moved != 1 and maps[chosen][p[i].y + dy][p[i].x + dx] == "E":
+#                maps[chosen][p[i].y][p[i].x] = f"{i}"
+                maps[chosen][p[i].y][p[i].x] = "x"
                 p[i].y += dy
                 p[i].x += dx
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "O"
+#                maps[chosen][p[i].y][p[i].x] = f"{i}"
+                maps[chosen][p[i].y][p[i].x] = "O"
                 p[i].moved = 1
                 solved = 1
-            elif p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == ".":
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "x"
+            elif p[i].moved != 1 and maps[chosen][p[i].y + dy][p[i].x + dx] == ".":
+#                maps[chosen][p[i].y][p[i].x] = f"{i}"
+                maps[chosen][p[i].y][p[i].x] = "x"
                 p[i].y += dy
                 p[i].x += dx
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "O"
+#                maps[chosen][p[i].y][p[i].x] = f"{i}"
+                maps[chosen][p[i].y][p[i].x] = "O"
                 p[i].moved = 1
 #                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
 
@@ -190,29 +90,47 @@ def solve():
         p[i].moved = 0
         p[i].routes = 0
 
-# main
-def main():
+def defaultmap():
+
+    # choose default map
+    print(f"so like which map or wtv")
+    for i in range(len(maps)):
+        print(f"{i}: map{i}")
+
+    chosen = int(input())
+
+    if chosen < 0 or chosen >= len(maps):
+        print("Invalid map choice")
+        return
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print(f"\n----- Map {chosen} -----")
+    printmap(chosen)
+    time.sleep(1)
+
+
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
-    printmap()
+    printmap(chosen)
     time.sleep(1)
     # find start
     solvable = False
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            if map[y][x] == "S":
+            if maps[chosen][y][x] == "S":
                 p[0].y = y
                 p[0].x = x
-                map[y][x] = "O"
+                maps[chosen][y][x] = "O"
                 solvable = True
 
     if solvable == False:
-        print("map not solvable")
+        print("maps[chosen] not solvable")
         return
 
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
-    printmap()
+    printmap(chosen)
     time.sleep(1)
     tries = 1
 
@@ -222,12 +140,12 @@ def main():
 
         print(f"\n----- Attempt {tries} -----")
 
-        solve()
+        solve(chosen)
 
     #    for i in range(0,len(p)):
     #        print(p[i].y, p[i].x)
 
-        printmap()
+        printmap(chosen)
         if solved:
             print(f"Solved in {tries}!\n")
             break
@@ -236,15 +154,21 @@ def main():
     if not solved:
         print(f"Couldn't solve within {MAXTRIES} attempts.\n")
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
     print('''what do you want to do?\n
-           1. use default map\n
-           2. import map\n
-           3. create map\n
+           1: use default maps[chosen]\n
+           2: import maps[chosen]\n
+           3: create maps[chosen]\n
+           q: quit
            ''')
-    input = input()
+    choice = input()
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-    if input == '1':
-        main()
+    if choice == '1':
+        defaultmap()
+    elif choice == '2':
+        importmap()
+    elif choice == '3':
+        createmap()
