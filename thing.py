@@ -33,6 +33,7 @@ def printmap():
 p = []
 player = Player()
 p.append(player)
+
 def solve():
     
     global solved
@@ -82,7 +83,15 @@ def solve():
                 map[p[i].y][p[i].x] = "O"
                 p[i].moved = 1
                 print(f"{i} moved {direction}, and is moved = {p[i].moved}")
-                printmap()
+            elif p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == "E":
+                map[p[i].y][p[i].x] = "x"
+                p[i].y += dy
+                p[i].x += dx
+                map[p[i].y][p[i].x] = "O"
+                p[i].moved = 1
+                solved = 1
+                return
+    printmap()
 
 
     for i in range(0, len(p)):
@@ -129,7 +138,6 @@ for i in range(MAXTRIES):
 
     print(f"\n\n----- Attempt {tries} -----\n")
 
-    printmap()
     solve()
 
     for i in range(0,len(p)):
