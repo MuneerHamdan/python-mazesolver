@@ -195,7 +195,7 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
     printmap()
-    time.sleep(0.75)
+    time.sleep(1)
     # find start
     solvable = False
     for y in range(HEIGHT):
@@ -213,11 +213,11 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
     printmap()
-    time.sleep(0.75)
+    time.sleep(1)
     tries = 1
 
     for i in range(MAXTRIES):
-        time.sleep(0.75)
+        time.sleep(1)
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\n----- Attempt {tries} -----")
@@ -237,4 +237,14 @@ def main():
         print(f"Couldn't solve within {MAXTRIES} attempts.\n")
 
 if __name__ == "__main__":
-    main()
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('''what do you want to do?\n
+           1. use default map\n
+           2. import map\n
+           3. create map\n
+           ''')
+    input = input()
+
+    if input == '1':
+        main()
