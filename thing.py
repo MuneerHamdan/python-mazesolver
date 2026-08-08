@@ -13,6 +13,16 @@ map = [
     list("#...##.#"),
     list("#.#.##.#"),
     list("#..S...#"),
+    list("#.#..#.#"),
+    list("#.####.#"),
+    list("#......#"),
+    list("######E#")
+]
+_map = [
+    list("#.#....#"),
+    list("#...##.#"),
+    list("#.#.##.#"),
+    list("#..S...#"),
     list("#.#.##.#"),
     list("#.####.#"),
     list("#......#"),
@@ -155,16 +165,7 @@ def solve():
     for i in range(0, len(p)):
 #        print(f"player {i} has moved: {p[i].moved}")
         for dy, dx, direction in moves:
-            if p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == ".":
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "x"
-                p[i].y += dy
-                p[i].x += dx
-#                map[p[i].y][p[i].x] = f"{i}"
-                map[p[i].y][p[i].x] = "O"
-                p[i].moved = 1
-#                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
-            elif p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == "E":
+            if p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == "E":
 #                map[p[i].y][p[i].x] = f"{i}"
                 map[p[i].y][p[i].x] = "x"
                 p[i].y += dy
@@ -173,23 +174,28 @@ def solve():
                 map[p[i].y][p[i].x] = "O"
                 p[i].moved = 1
                 solved = 1
-                return
+            elif p[i].moved != 1 and map[p[i].y + dy][p[i].x + dx] == ".":
+#                map[p[i].y][p[i].x] = f"{i}"
+                map[p[i].y][p[i].x] = "x"
+                p[i].y += dy
+                p[i].x += dx
+#                map[p[i].y][p[i].x] = f"{i}"
+                map[p[i].y][p[i].x] = "O"
+                p[i].moved = 1
+#                print(f"{i} moved {direction}, and is moved = {p[i].moved}")
 
-
+    if solved == 1:
+        return
     for i in range(0, len(p)):
         p[i].moved = 0
         p[i].routes = 0
-
-
-    return p[0]
-
 
 # main
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
     printmap()
-    time.sleep(1)
+    time.sleep(0.75)
     # find start
     solvable = False
     for y in range(HEIGHT):
@@ -202,16 +208,16 @@ def main():
 
     if solvable == False:
         print("map not solvable")
-        return -1
+        return
 
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
     printmap()
-    time.sleep(1)
+    time.sleep(0.75)
     tries = 1
 
     for i in range(MAXTRIES):
-        time.sleep(1)
+        time.sleep(0.75)
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\n----- Attempt {tries} -----")
@@ -223,12 +229,12 @@ def main():
 
         printmap()
         if solved:
-            print(f"solved in {tries}!")
+            print(f"Solved in {tries}!\n")
             break
         tries += 1
 
     if not solved:
-        print(f"couldnt solve within {MAXTRIES} attempts")
+        print(f"Couldn't solve within {MAXTRIES} attempts.\n")
 
 if __name__ == "__main__":
     main()
