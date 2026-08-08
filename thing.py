@@ -92,22 +92,23 @@ def solve(chosen):
 
 def defaultmap():
 
+    chosen = 0
+    chose = ''
+    i = 0
     # choose default map
     print(f"so like which map or wtv")
-    for i in range(len(maps)):
-        print(f"{i}: map{i}")
-
-    chosen = int(input())
-
-    if chosen < 0 or chosen >= len(maps):
-        print("Invalid map choice")
-        return
-
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    print(f"\n----- Map {chosen} -----")
-    printmap(chosen)
-    time.sleep(1)
+    while (chose != 'q'):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"\n----- Map {i} -----")
+        printmap(i)
+        print("you want this one? - [y]uh / [n]ah")
+        chose = input()
+        if chose == 'y':
+            chosen = i
+            break
+        elif chose == 'n':
+            i += 1
+            pass
 
 
     os.system('cls' if os.name == 'nt' else 'clear')
