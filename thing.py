@@ -96,14 +96,15 @@ def defaultmap():
     chose = ''
     i = 0
     # choose default map
-    print(f"so like which map or wtv")
-    while (chose != 'q'):
+    for map in maps:
         os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"so like which map")
         print(f"\n----- Map {i} -----")
         printmap(i)
-        print("you want this one? - [y]uh / [n]ah")
+        print("you want this one? - [y] / [n]")
         chose = input()
         if chose == 'y':
+            print(f"so like which map or wtv")
             chosen = i
             break
         elif chose == 'n':
@@ -111,11 +112,12 @@ def defaultmap():
             pass
 
 
+    # print blank chosen map
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"\n----- Attempt 0 -----")
     printmap(chosen)
     time.sleep(1)
-    # find start
+    # initialize player
     solvable = False
     for y in range(HEIGHT):
         for x in range(WIDTH):
@@ -124,9 +126,10 @@ def defaultmap():
                 p[0].x = x
                 maps[chosen][y][x] = "O"
                 solvable = True
+                break
 
     if solvable == False:
-        print("maps[chosen] not solvable")
+        print("map not solvable")
         return
 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -136,7 +139,6 @@ def defaultmap():
     tries = 1
 
     for i in range(MAXTRIES):
-        time.sleep(1)
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\n----- Attempt {tries} -----")
@@ -151,6 +153,7 @@ def defaultmap():
             print(f"Solved in {tries}!\n")
             break
         tries += 1
+        time.sleep(1)
 
     if not solved:
         print(f"Couldn't solve within {MAXTRIES} attempts.\n")
@@ -159,9 +162,10 @@ def defaultmap():
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
     print('''what do you want to do?\n
-           1: use default maps[chosen]\n
-           2: import maps[chosen]\n
-           3: create maps[chosen]\n
+           1: use default maps\n
+           2: import map\n
+           3: create map\n
+           4: random map\n
            q: quit
            ''')
     choice = input()
@@ -169,7 +173,9 @@ if __name__ == "__main__":
 
     if choice == '1':
         defaultmap()
-    elif choice == '2':
-        importmap()
-    elif choice == '3':
-        createmap()
+#    elif choice == '2':
+#        importmap()
+#    elif choice == '3':
+#        createmap()
+#    elif choise == '4':
+#        randommap()
